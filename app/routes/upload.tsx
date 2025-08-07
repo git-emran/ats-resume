@@ -1,16 +1,28 @@
-import { useState } from "react"
+import type { i } from "node_modules/@react-router/dev/dist/routes-DHIOx0R9"
+import { useState, type FormEvent } from "react"
+import FileUploader from "~/components/FileUploader"
 import Navbar from "~/components/Navbar"
 
 const Upload = () => {
     const [isProcessing, setIsProcessing] = useState(false)
     const [statusText, setStatusText] = useState("")
+    const [file, setFile] = useState<File | null>(null)
+
+    const handleFileSelect = (file: File | null) => {
+        setFile(file)
+
+    }
+
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+    }
     return (
-        <main className="bg-[url('/images/bg-main.svg')] bg-cover">
+        <main className="bg-[url('/images/bg-main.svg')] bg-cover min-h-screen">
             <Navbar />
 
             <section className="main-section">
 
-                <div>
+                <div className="page-heading py-16">
                     <h1>
                         Smart Feedback for your Dream job
                     </h1>
@@ -27,12 +39,11 @@ const Upload = () => {
                         </h2>
                     )}
                     {!isProcessing && (
-                        <form>
+                        <form id="upload-form" onSubmit={handleSubmit}>
                             <div className="form-div">
                                 <label htmlFor="company-name">
                                     Company Name
-                                </label>
-                                <input type="text" name="company-name" placeholder="Company name" id="company-name" />
+                                </label> <input type="text" name="company-name" placeholder="Company name" id="company-name" />
                             </div>
                             <div className="form-div">
                                 <label htmlFor="Job Title">
@@ -44,8 +55,18 @@ const Upload = () => {
                                 <label htmlFor="Job Description">
                                     Job Description
                                 </label>
-                                <input type="text" name="Job Description" placeholder="Job Description" id="job-description" />
+                                <textarea rows={5} name="Job Description" placeholder="Job Description" id="job-description" />
                             </div>
+
+                            <div className="form-div">
+                                <label htmlFor="uploader">
+                                    Upload Your Resume
+                                </label>
+                                <FileUploader onFileSelect={handleFileSelect} />
+                            </div>
+
+                            <button className="primary-button" type="submit">Analyze Resume</button>
+
 
                         </form>
                     )}
